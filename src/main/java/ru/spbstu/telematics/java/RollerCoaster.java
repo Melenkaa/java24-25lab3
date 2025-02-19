@@ -9,10 +9,20 @@ public class RollerCoaster {
 
     private static int passengersOnPlatform = 0;
 
-    public static void main(String[] args) {
-        new Thread(new Turnstile()).start();
-        new Thread(new Controller()).start();
-        new Thread(new Cart()).start();
+    public static void main(String[] args) throws InterruptedException {
+        Thread turnstileThread = new Thread(new Turnstile());
+        Thread controllerThread = new Thread(new Controller());
+        Thread cartThread = new Thread(new Cart());
+
+        turnstileThread.start();
+        controllerThread.start();
+        cartThread.start();
+
+        Thread.sleep(6000);
+
+        turnstileThread.interrupt();
+        controllerThread.interrupt();
+        cartThread.interrupt();
     }
 
     static class Turnstile implements Runnable {
